@@ -1,0 +1,69 @@
+---
+- hosts: message-broker
+  tasks:
+    # - name: Create a network
+      # docker_network:
+      #   name: net_mbpg
+      #   connected:
+      #     - message-broker-pg
+      #     - message-broker
+
+    - name: start postgres
+      docker_container:
+        name: message-broker-pg
+        image: postgres
+        state: started
+        restart: no # yes means to restrt even if it's running
+        ports:
+          - "127.0.0.1:65432:5432"
+        # networks:
+        #   - name: net_mbpg
+        env:
+          POSTGRES_USER: mbroker_user
+          POSTGRES_PASSWORD: bWJyb2tlcl91c2VyCg==
+          POSTGRES_DB: mbroker
+      register: postgres_metadata
+      tags:
+        - postgres
+
+    - name: wait for postgres be ready to accept connections
+      wait_for:
+        host: '{{ postgres_metadata["ansible_facts"]["docker_container"]["NetworkSettings"]["IPAddress"] }}'
+        port: 65432
+        state: drained
+        connect_timeout: 1
+        timeout: 30
+      ignore_errors: True
+      no_log: True
+
+    - name: build app image
+      docker_image:
+        path: ../
+        name: message-broker
+        tag: v0.2
+        state: present
+        force: yes # rebuild even if exists
+        # nocache: yes
+        push: no
+      tags:
+        - app
+    
+    - name: start app
+      docker_container:
+        name: message-broker
+        image: message-broker:v0.2
+        state: started
+        restart: yes
+        ports:
+          - "127.0.0.1:28080:8080"
+        links:
+          - message-broker-pg:pg
+        # networks:
+        #   - name: net_mbpg
+      tags:
+        - app
+
+    - name: show info
+      debug: msg="Message broker started on 127.0.0.1:28080"
+      tags:
+        - app

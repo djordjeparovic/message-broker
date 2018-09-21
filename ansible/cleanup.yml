@@ -1,0 +1,18 @@
+---
+- hosts: message-broker
+  tasks:
+    - name: stop postgres
+      docker_container:
+        name: message-broker-pg
+        image: postgres
+        state: absent
+      tags:
+        - postgres
+
+    - name: stop app
+      docker_container:
+        name: message-broker
+        image: message-broker:v0.2
+        state: absent
+      tags:
+        - app

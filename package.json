@@ -1,0 +1,33 @@
+{
+  "name": "message-broker",
+  "version": "0.0.1",
+  "description": "Message broker microservice built with Postgres",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint ./app --fix",
+    "serve-production": "PGHOST=127.0.0.1 PGPORT=65432 node app/index.js --max_old_space_size=4096",
+    "test": "./test/run.sh"
+  },
+  "keywords": [
+    "message",
+    "broker",
+    "postgres",
+    "microservice",
+    "rest"
+  ],
+  "author": "Djordje Parovic",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.18.0",
+    "pg": "^7.4.3",
+    "randomstring": "^1.1.5",
+    "restify": "^7.2.1",
+    "tracer": "^0.9.1"
+  },
+  "devDependencies": {
+    "eslint": "^5.6.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "mocha": "^5.2.0"
+  }
+}

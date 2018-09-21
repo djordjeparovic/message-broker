@@ -1,0 +1,27 @@
+---
+- hosts: message-broker
+  tasks:
+    - name: install docker
+      apt: name=docker.io state=present
+      when: ansible_os_family == "Debian"
+    - name: install docker
+      homebrew:
+        name: docker
+        state: present
+      when: ansible_os_family == "Darwin"
+
+    - name: install python-pip
+      apt: name=python-pip state=present
+      when: ansible_os_family == "Debian"
+    - name: install python-pip
+      command: python -m ensurepip
+      when: ansible_os_family == "Darwin"
+
+    - name:  satisfy docker deps
+      pip: name={{ item }}
+      with_items:
+        - docker-py
+      when: ansible_os_family == "Darwin"
+
+    - name: pull postgres image
+      docker_image: name=postgres
