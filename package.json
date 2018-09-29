@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint ./app --fix",
-    "serve-production": "PGHOST=127.0.0.1 PGPORT=65432 node app/index.js --max_old_space_size=4096",
+    "serve-production": "node app/index.js --max_old_space_size=4096",
     "test": "./test/run.sh"
   },
   "keywords": [
@@ -22,7 +22,8 @@
     "pg": "^7.4.3",
     "randomstring": "^1.1.5",
     "restify": "^7.2.1",
-    "tracer": "^0.9.1"
+    "tracer": "^0.9.1",
+    "prompt": "^1.0.0"
   },
   "devDependencies": {
     "eslint": "^5.6.0",
