@@ -6,7 +6,7 @@ const mb = new MBroker();
 module.exports = (req, res) => {
   const message = JSON.stringify(req.body);
   logger.info(req.params, message);
-  mb.publish(req.params.topic, message, req.params.mode)
+  mb.publish(req.params.topic, message, req.params.multiplex)
     .then(() => {
       res.json({ status: 'ok' });
     })

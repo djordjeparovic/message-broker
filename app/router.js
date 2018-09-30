@@ -7,7 +7,7 @@ module.exports = [
   },
   {
     method: 'post',
-    path: '/publish/:topic/:mode',
+    path: '/publish/:topic/:multiplex',
     controller: 'publish.js',
   },
   {

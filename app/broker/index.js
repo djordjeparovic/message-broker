@@ -20,10 +20,7 @@ const MessageBroker = function MessageBroker(config) {
       this.close();
     });
 
-  this.publish = (topic, message, mode) => {
-    const multiplex = mode || 1;
-    return this.db.publish(topic, message, multiplex);
-  };
+  this.publish = (topic, message, multiplex) => this.db.publish(topic, message, multiplex || 1);
 
   this.fetch = topic => this.db.getLatestPostition(topic)
     .then(position => this.db.fetch(topic, 0, position))

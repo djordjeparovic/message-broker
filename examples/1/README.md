@@ -1,4 +1,4 @@
-# Run
+# Basic demo publish and fetch messages
 * start the app docker container
 * open a few terminal windows (tabs)
 * start producer
